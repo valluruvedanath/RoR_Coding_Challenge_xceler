@@ -1,4 +1,17 @@
+
 Rails.application.routes.draw do
+  namespace :api do
+    namespace :v1 do
+        get 'events/list', to: 'events#index', defaults: {format: 'json'}
+        #post 'events/add', to: 'events#joining_to_event'
+    resources :events
+    end
+    namespace :admin do
+      get 'events/list', to: 'events#index', defaults: {format: 'json'}
+      post 'events/add', to: 'events#create_event_by_admin'
+      resources :events
+    end
+  end
   resources :events
   get 'sessions/new'
   resources :sessions
