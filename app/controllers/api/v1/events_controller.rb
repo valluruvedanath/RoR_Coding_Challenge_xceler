@@ -1,6 +1,8 @@
 module Api
   module V1
     class EventsController < ApplicationController
+      skip_before_action :verify_authenticity_token
+
       #respond_to :json
 
       def index

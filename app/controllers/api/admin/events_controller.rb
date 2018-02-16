@@ -29,6 +29,41 @@ module Api
             event.save
             render json: "event created sucessfully"
           end
+          def user_intrested_events
+            event_subscriptions = EventSubscription.where("is_intrested=?", true)
+            grouped_arts = event_subscriptions.group_by {|art| "event-"+art.event_id.to_s} if event_subscriptions.present?
+            respond_to do |format|
+              format.json { render json: grouped_arts }
+            end
+          end
+          def attendees_confirmed_by_admin
+            event_subscription = EventSubscription.find_by_user_id_and_event_id(params[:user_id], params[:event_id])
+            if event_subscription.present?
+              event_subscription.is_confirmed_by_admin = true
+              event_subscription.is_removed_by_admin = false
+              event_subscription.save
+            end
+          end
+          def attendees_removed_by_admin
+            event_subscription = EventSubscription.find_by_user_id_and_event_id(params[:user_id], params[:event_id])
+            if event_subscription.present?
+              event_subscription.is_confirmed_by_admin = false
+              event_subscription.is_removed_by_admin = true
+              event_subscription.save
+            end
+          end
+          def confirmed_list
+            event_subscription = EventSubscription.where("is_confirmed_by_admin=? and is_removed_by_admin=?", true, false)
+            respond_to do |format|
+              format.json { render :json => {:confirmed_list => event_subscription.present? ? event_subscription : "there is no confirmed list. " }}
+            end
+          end
+          def removed_list
+            event_subscription = EventSubscription.where("is_confirmed_by_admin=? and is_removed_by_admin=?", false, true)
+            respond_to do |format|
+              format.json { render :json => {:removed_list => event_subscription.present? ? event_subscription : "there is no removed list. " }}
+            end
+          end
           def new
             @event = Event.new
           end
