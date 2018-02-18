@@ -16,6 +16,8 @@ Rails.application.routes.draw do
       get 'events/confirmed/list', to: 'events#confirmed_list'
       get 'events/removed/list', to: 'events#removed_list'
       get 'events/intersetedusers', to: 'events#user_intrested_events', defaults: {format: 'json'}
+      get 'events/attendeeswillingcount', to: 'events#attendees_willing_count', defaults: {format: 'json'}
+      get 'events/attendeesnotwillingcount', to: 'events#attendees_not_willing_count', defaults: {format: 'json'}
       resources :events
     end
   end

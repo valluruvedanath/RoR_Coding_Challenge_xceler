@@ -43,6 +43,7 @@ module Api
               event_subscription.is_removed_by_admin = false
               event_subscription.save
             end
+            render :json =>{ :status => "event confirmed by admin"}
           end
           def attendees_removed_by_admin
             event_subscription = EventSubscription.find_by_user_id_and_event_id(params[:user_id], params[:event_id])
@@ -62,6 +63,18 @@ module Api
             event_subscription = EventSubscription.where("is_confirmed_by_admin=? and is_removed_by_admin=?", false, true)
             respond_to do |format|
               format.json { render :json => {:removed_list => event_subscription.present? ? event_subscription : "there is no removed list. " }}
+            end
+          end
+         def attendees_willing_count
+           event_subscription = EventSubscription.where("is_intrested=?", true)
+           respond_to do |format|
+             format.json { render :json => {:willing_count => event_subscription.present? ? event_subscription.size() : 0  }}
+           end
+         end
+          def attendees_not_willing_count
+            event_subscription = EventSubscription.where("is_intrested=?", false)
+            respond_to do |format|
+              format.json { render :json => {:not_willing_count => event_subscription.present? ? event_subscription.size() : 0  }}
             end
           end
           def new
