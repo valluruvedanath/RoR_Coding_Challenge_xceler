@@ -96,7 +96,7 @@ count of not willing to join event
 installation process on windows  why because i am using windows pc
 
 
-1. go to  visit link http://railsinstaller.org/en 
+1. go to  visit link [railsinstaller](http://railsinstaller.org/en) 
 
 2. select rails installer latest version. I select ruby 2.2 version. in that rails installer providing 
 rails version 5.0 
